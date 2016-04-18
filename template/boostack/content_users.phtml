@@ -23,11 +23,17 @@
                             <h4 class="modal-title">Add new user</h4>
                         </div>
                         <div class="modal-body">
-                        <form name="saveform" id="saveform" class="form-horizontal" method="post" action="<?=$boostack->getFriendlyUrl("registration")?>">
+                        <form name="saveform" id="saveform" class="form-horizontal" method="post" action="<?=$boostack->getFriendlyUrl("user")?>">
                             <div class="form-group name">
                                 <label for="name" class="col-sm-4 control-label">Name</label>
                                 <div class="col-sm-8">
                                     <input type="name" class="form-control" name="name" id="name" placeholder="Name">
+                                </div>
+                            </div>
+                            <div class="form-group name">
+                                <label for="username" class="col-sm-4 control-label">Username</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" name="username" id="username" placeholder="Username">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -54,13 +60,13 @@
                                 <label for="inputEmail3" class="col-sm-4 control-label">Email</label>
                                 <div class="col-sm-8">
 
-                                    <input type="email" class="form-control" name="email" id="inputEmail3" placeholder="Email">
+                                    <input type="email" class="form-control" name="email" id="email" placeholder="Email">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="inputPassword1" class="col-sm-4 control-label">Password</label>
                                 <div class="col-sm-8">
-                                    <input type="password" class="form-control" name="psw1" id="inputPassword1" placeholder="Password">
+                                    <input type="password" class="form-control" name="psw1" id="password" placeholder="Password">
                                 </div>
                             </div>
 
@@ -101,14 +107,14 @@
 
                             <!-- Modal content-->
                             <div class="modal-content">
-                                <form method="POST" action="<?= $boostack->getFriendlyUrl("users")?>" class="form-horizontal">
+                                <form method="POST" action="<?= $boostack->getFriendlyUrl("user")?>" id="updatedelete" class="form-horizontal" userid="<?php echo $key->id; ?>">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                                     <h4 class="modal-title">Information</h4>
                                 </div>
 
                                 <div class="modal-body">
-                                    <input type="hidden" name="id" value="<?php echo $key->id; ?>">
+                                    <input type="hidden" name="id" id="id" value="<?php echo $key->id; ?>">
                                     <div class="form-group">
                                     <label class="col-sm-4 control-label">Username</label>
                                         <div class="col-sm-8">
@@ -118,31 +124,31 @@
                                     <div class="form-group">
                                     <label class="col-sm-4 control-label">Email</label>
                                         <div class="col-sm-8">
-                                    <input class="form-control" type="text" name="username" value="<?php echo $key->email ?>">
+                                    <input class="form-control" type="email" name="email" value="<?php echo $key->email ?>">
                                     </div>
                                 </div>
                                     <div class="form-group">
                                     <label class="col-sm-4 control-label">Name</label>
                                         <div class="col-sm-8">
-                                    <input class="form-control" type="text" name="username" value="<?php echo $key->name ?>">
+                                    <input class="form-control" type="text" name="name" value="<?php echo $key->name ?>">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                     <label class="col-sm-4 control-label">Active</label>
                                         <div class="col-sm-8">
-                                    <input class="form-control" type="text" name="username" value="<?php echo $key->active ?>">
+                                    <input class="form-control" type="text" name="active" value="<?php echo $key->active ?>">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                     <label class="col-sm-4 control-label">Privilege</label>
                                         <div class="col-sm-8">
-                                    <input class="form-control" type="text" name="username" value="<?php echo $key->privilege ?>">
+                                    <input class="form-control" type="text" name="privilege" value="<?php echo $key->privilege ?>">
                                     </div>
                                 </div>
                                     <div class="form-group">
                                     <label class="col-sm-4 control-label">Password</label>
                                         <div class="col-sm-8">
-                                    <input class="form-control" type="text" name="username" value="<?php echo $key->pwd ?>">
+                                    <input class="form-control" type="password" name="password" value="<?php echo $key->pwd ?>">
                             </div>
                         </div>
                                 </div>

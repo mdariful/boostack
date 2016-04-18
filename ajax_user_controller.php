@@ -16,7 +16,7 @@ switch ($crud) {
         userUpdate($id);
         Break;
     case "delete":
-        userDelete($id);
+        userDelete();
         Break;
     Default:
         exit;
@@ -27,10 +27,12 @@ switch ($crud) {
 //save data
 function userInsert()
 {
-    if (isset($_POST["name"]) && isset($_POST["email"]) && isset($_POST["psw1"]) && isset($_POST["privilege"]) && isset($_POST["active"])) {
+    $res = array();
+    if (isset($_POST["username"]) && $_POST["name"] && isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST["privilege"]) && isset($_POST["active"])) {
+        $username = sanitizeInput($_POST["username"]);
         $name = sanitizeInput($_POST["name"]);
         $email = sanitizeInput($_POST["email"]);
-        $psw1 = sanitizeInput($_POST["psw1"]);
+        $password = sanitizeInput($_POST["password"]);
         $privilege = sanitizeInput($_POST["privilege"]);
         $active = sanitizeInput($_POST["active"]);
         if (checkEmailFormat($email)) {
@@ -38,10 +40,11 @@ function userInsert()
             $arr["name"] = $name;
             $arr["username"] = $email;
             $arr["email"] = $email;
-            $arr["pwd"] = $psw1;
+            $arr["pwd"] = $password;
             $arr["privilege"] = $privilege;
             $arr["active"] = $active;
-            $user->insert($arr);
+            $res = $user->insert($arr);
+            echo json_encode($res);
         }
     }
 }
@@ -50,18 +53,19 @@ function userInsert()
 
 function userUpdate($id)
 {
-    if (isset($_POST["name"]) && isset($_POST["email"]) && isset($_POST["psw1"]) && isset($_POST["privilege"]) && isset($_POST["active"])) {
+    if (isset($_POST["username"]) && $_POST["name"] && isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST["privilege"]) && isset($_POST["active"])) {
+        $username = sanitizeInput($_POST["username"]);
         $name = sanitizeInput($_POST["name"]);
         $email = sanitizeInput($_POST["email"]);
-        $psw1 = sanitizeInput($_POST["psw1"]);
+        $password = sanitizeInput($_POST["password"]);
         $privilege = sanitizeInput($_POST["privilege"]);
         $active = sanitizeInput($_POST["active"]);
         if (checkEmailFormat($email)) {
             $user = new User($id);
             $arr["name"] = $name;
-            $arr["username"] = $email;
+            $arr["username"] = $username;
             $arr["email"] = $email;
-            $arr["pwd"] = $psw1;
+            $arr["pwd"] = $password;
             $arr["privilege"] = $privilege;
             $arr["active"] = $active;
             $user->update($arr);
@@ -70,11 +74,11 @@ function userUpdate($id)
 }
 
 //delete data
-function userDelete($id)
+function userDelete()
 {
-    if (isset($_POST["delete"])) {
+        $res = array();
         $id = $_POST["id"];
         $users = new User($id);
-        $users->delete();
-    }
+        $res["status"] = $users->delete($id);
+
 }
