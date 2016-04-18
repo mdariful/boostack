@@ -274,5 +274,29 @@ function checkEmailFormat($email) {
     }
     return true;
 }
+/**
+ * check form validator
+ */
+function inputcheck($string, $throwException = true){
+
+    // now we see if there is anything in the string
+    if(empty($string))
+    {
+        if ($throwException)
+            throw new Exception("Insert a valid name.");
+        return false;
+    }
+    return true;
+}
+function checkphone($phone, $throwException = true){
+    $regexp ="/^[0-9]{3}-[0-9]{4}-[0-9]{4}$/";
+    if (empty($phone) || preg_match($regexp, $phone) || strlen($phone) < 7)
+    {
+        if($throwException)
+            throw new Exception("Insert a valid number");
+        return false;
+    }
+    return true;
+}
 
 ?>

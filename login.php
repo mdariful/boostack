@@ -41,8 +41,9 @@ if($config['session_on']) {
     } else $error = "Too much request. Wait some seconds";
 }
 
-if($config['session_on'] && $objSession->IsLoggedIn())
-    require_once $boostack->registerTemplateFile("boostack/content_login_logged.phtml");
+if($config['session_on'] && $objSession->IsLoggedIn()){
+    header("Location: profile");
+}
 else
     require_once $boostack->registerTemplateFile("boostack/content_login.phtml");
 

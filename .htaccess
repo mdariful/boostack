@@ -43,12 +43,15 @@ RewriteRule ^login$ login.php [L]
 RewriteRule ^registration$ registration.php [L]
 RewriteRule ^logout$ logout.php [L]
 RewriteRule ^api/([^\.]+)$ api.php?request=$1 [L]
+RewriteRule ^profile$ profile.php [L]
+RewriteRule ^profile-edit$ profile-edit.php [L]
+RewriteRule ^user$ user.php [L]
 
-ErrorDocument 400 http://boostack.com/error.php
-ErrorDocument 401 http://boostack.com/error.php
-ErrorDocument 403 http://boostack.com/error.php
-ErrorDocument 404 http://boostack.com/error.php
-ErrorDocument 500 http://boostack.com/error.php
+ErrorDocument 400 http://boostack.dev/error.php
+ErrorDocument 401 http://boostack.dev/error.php
+ErrorDocument 403 http://boostack.dev/error.php
+ErrorDocument 404 http://boostack.dev/error.php
+ErrorDocument 500 http://boostack.dev/error.php
 
 
 ############## SECURITY

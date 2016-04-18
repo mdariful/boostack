@@ -1,0 +1,126 @@
+<section class="disclaimer sectionTitle">
+	<div class="line">
+		<div class="container">
+			<div class="row">
+				<h1><?=$boostack->getLabel("navigation.profile");?></h1>
+</div>
+</div>
+</div>
+</section>
+<p>&nbsp;</p>
+
+<div class="container">
+    <div class="row">
+
+        <div class="col-xs-12 col-sm-12 toppad" >
+            <div class="panel panel-info">
+                <a href="<?=$boostack->getFriendlyUrl("profile-edit.php");?>" type="button" class="btn btn-warning pull-right panel-title">Edit</a>
+                <div class="panel-heading">
+                    <h3 class="panel-title"><?=$userInfo->first_name." ".$userInfo->last_name?></h3>
+
+                </div>
+
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-3 col-lg-3 " align="center"> <img alt="User Pic" src="http://placehold.it/150" class="img-circle img-responsive"> </div>
+
+                        <!--<div class="col-xs-10 col-sm-10 hidden-md hidden-lg"> <br>
+                          <dl>
+                            <dt>DEPARTMENT:</dt>
+                            <dd>Administrator</dd>
+                            <dt>HIRE DATE</dt>
+                            <dd>11/12/2013</dd>
+                            <dt>DATE OF BIRTH</dt>
+                               <dd>11/12/2013</dd>
+                            <dt>GENDER</dt>
+                            <dd>Male</dd>
+                          </dl>
+                        </div>-->
+                        <div class=" col-md-9 col-lg-9 ">
+                            <table class="table table-user-information">
+                                <tbody>
+                                <tr>
+                                    <td>Sex</td>
+                                    <td><?=$userInfo->sex?></td>
+                                </tr>
+                                <tr>
+                                    <td>Locale:</td>
+                                    <td><?=$userInfo->locale?></td>
+                                </tr>
+                                <tr>
+                                    <td>City:</td>
+                                    <td><?=$userInfo->city?></td>
+                                </tr>
+                                <tr>
+                                    <td>State:</td>
+                                    <td><?=$userInfo->state?></td>
+                                </tr>
+
+                                <tr>
+                                <tr>
+                                    <td>Country:</td>
+                                    <td><?=$userInfo->country?></td>
+                                </tr>
+                                <tr>
+                                    <td>Zip:</td>
+                                    <td><?=$userInfo->zip?></td>
+                                </tr>
+                                <tr>
+                                    <td>About Me:</td>
+                                    <td><?=$userInfo->about_me?></td>
+                                </tr>
+                                <tr>
+                                    <td>Email:</td>
+                                    <td><a href="mailto:<?=$CURRENTUSER->email?>"><?=$CURRENTUSER->email?></a></td>
+                                </tr>
+                                <tr>
+                                <td>Phone Number:</td>
+                                <td><?=$userInfo->tel?>(Landline)<br><br><?=$userInfo->cell?>(Mobile)
+                                </td>
+                                </tr>
+                                <tr>
+                                    <td>Profession:</td>
+                                    <td><?=$userInfo->profession?></td>
+                                </tr>
+                                <tr>
+                                    <td>Birthday:</td>
+                                    <td><?=$userInfo->birthday?></td>
+                                </tr>
+                                <tr>
+                                    <td>Movies:</td>
+                                    <td><?=$userInfo->movies?></td>
+                                </tr>
+                                <tr>
+                                    <td>Music:</td>
+                                    <td><?=$userInfo->music?></td>
+                                </tr>
+                                <tr>
+                                    <td>Political:</td>
+                                    <td><?=$userInfo->political?></td>
+                                </tr>
+                                <tr>
+                                    <td>Interests:</td>
+                                    <td><?=$userInfo->interests?></td>
+                                </tr>
+                                <tr>
+                                    <td>TV:</td>
+                                    <td><?=$userInfo->tv?></td>
+                                </tr>
+                                <tr>
+                                    <td>Religion:</td>
+                                    <td><?=$userInfo->religion?></td>
+                                </tr>
+
+
+                                </tbody>
+                            </table>
+
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

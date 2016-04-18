@@ -62,7 +62,8 @@ class User_Info extends User
     {
         parent::__construct($id);
         if ($id != - 1) {
-            $fields = $this->dbfield;
+            $sql = "SELECT * FROM " . self::TABLENAME . " WHERE id ='" . $id . "' ";
+            $fields = $this->pdo->query($sql)->fetch(PDO::FETCH_ASSOC);
             $this->first_name = $fields["first_name"];
             $this->last_name = $fields["last_name"];
             $this->locale = $fields["locale"];

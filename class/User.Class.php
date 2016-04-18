@@ -201,6 +201,18 @@ class User
         return true;
     }
 
+    public function emailAlreadyExist($email)
+    {
+        $sql = "SELECT id FROM " . self::TABLENAME . " WHERE email ='" . $email . "' ";
+        $q = $this->pdo->query($sql);
+        $q2 = $q->fetch();
+        if ($q->rowCount() == 0){
+            echo "0";
+        }else{
+        echo "1";
+        }
+    }
+
     public function checkEmailFormat($email, $throwException = true)
     {
         $regexp = "/^[a-z0-9]+([_\\.-][a-z0-9]+)*@([a-z0-9]+([\.-][a-z0-9]+)*)+\\.[a-z]{2,}$/i";
@@ -273,6 +285,5 @@ class User
         setcookie($boostack->getConfig("cookie_name"), $cookieHash, time() + $boostack->getConfig("cookie_expire"), '/');
         $this->pdo->query("UPDATE " . self::TABLENAME . " SET session_cookie = '$cookieHash' WHERE id = '" . $this->id . "'");
     }
-
 }
 ?>

@@ -19,9 +19,16 @@
                 </div>
                 <div class="panel-body">
                     <form class="form-horizontal" method="post" action="<?=$boostack->getFriendlyUrl("registration")?>">
-                        <div class="form-group">
+                        <div class="form-group name">
+                            <label for="name" class="col-sm-4 control-label">Name</label>
+                            <div class="col-sm-8">
+                                <input type="name" class="form-control" name="name" id="name" placeholder="Name">
+                            </div>
+                        </div>
+                        <div class="form-group email">
                             <label for="inputEmail3" class="col-sm-4 control-label">Email</label>
                             <div class="col-sm-8">
+                                
                                 <input type="email" class="form-control" name="email" id="inputEmail3" placeholder="Email">
                             </div>
                         </div>
@@ -39,7 +46,7 @@
                         </div>
                         <div class="form-group">
                             <div class="col-sm-offset-4 col-sm-8">
-                                <button type="submit" class="btn btn-default">Register</button>
+                                <button type="submit" class="btn btn-default" id="submit">Register</button>
                             </div>
                         </div>
                     </form>

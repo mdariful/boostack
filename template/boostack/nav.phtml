@@ -3,7 +3,14 @@
 		<li><a href="<?=$boostack->getFriendlyUrl("home");?>"><?=$boostack->getLabel("navigation.home");?></a></li>
 		<li><a href="<?=$boostack->getFriendlyUrl("download");?>"><?=$boostack->getLabel("navigation.download");?></a></li>
 		<li><a href="<?=$boostack->getFriendlyUrl("docs/introduction");?>"><?=$boostack->getLabel("navigation.documentation");?></a></li>
+
+
+		<?php if ($objSession->IsLoggedIn()) : ?>
+		<li><a href="<?=$boostack->getFriendlyUrl("profile");?>"><?=$boostack->getLabel("navigation.profile");?></a></li>
+			<li><a href="<?=$boostack->getFriendlyUrl("logout")?>">Logout</a></li>
+		<?php else : ?>
 		<li><a href="<?=$boostack->getFriendlyUrl("login");?>"><?=$boostack->getLabel("navigation.login");?></a></li>
 		<li><a href="<?=$boostack->getFriendlyUrl("registration");?>"><?=$boostack->getLabel("navigation.registration");?></a></li>
+		<?php endif; ?>
 	</ul>
 </header>

@@ -11,8 +11,8 @@
 
 // ====== CHOOSE THE ENVIRONMENT ======
 define('CURRENT_ENVIRONMENT', "local"); // [local] | [staging] | [production] | {[create custom env]}
-define('ROOTPATH', $_SERVER['DOCUMENT_ROOT'] . "/boostack/");
-                                        
+define('ROOTPATH', $_SERVER['DOCUMENT_ROOT'] . "/");
+
 // ====== DO NOT EDIT BELOW THIS LINE
 require_once (ROOTPATH . "core/env/" . CURRENT_ENVIRONMENT . ".env.php");
 require_once (ROOTPATH . "core/env/global.env.php"); // import global environment
