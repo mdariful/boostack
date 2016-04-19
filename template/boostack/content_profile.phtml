@@ -11,12 +11,12 @@
 
 <div class="container">
     <div class="row">
-
+        <div id="login-alert" class="alert alert-danger col-sm-12 <?=($error=="")?"hidden":"";?>"><?=$error;?></div>
         <div class="col-xs-12 col-sm-12 toppad" >
             <div class="panel panel-info">
                 <a href="<?=$boostack->getFriendlyUrl("profile-edit.php");?>" type="button" class="btn btn-warning pull-right panel-title">Edit</a>
                 <div class="panel-heading">
-                    <h3 class="panel-title"><?=$userInfo->first_name." ".$userInfo->last_name?></h3>
+                    <h3 class="panel-title">Information</h3>
 
                 </div>
 

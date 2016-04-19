@@ -9,7 +9,7 @@
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
  * @version 2.1
  */
-class User
+class User implements \JsonSerializable
 {
 
     private $dbfield;
@@ -52,7 +52,9 @@ class User
         $this->pdo = Database_PDO::getInstance();
         if ($id != - 1) {
             if ($init) {
+
                 $sql = "SELECT * FROM " . self::TABLENAME . " WHERE id ='" . $id . "' ";
+
                 $fields = $this->pdo->query($sql)->fetch(PDO::FETCH_ASSOC);
                 if (get_class($this) != __CLASS__)
                     $this->dbfield = $fields;
@@ -72,6 +74,14 @@ class User
                 $this->id = $fields["id"];
             }
         }
+    }
+
+    public function jsonSerialize()
+    {
+        // TODO: Implement jsonSerialize() method.
+        $vars =get_object_vars($this);
+        unset($vars["pwd"]);
+        return $vars;
     }
 
     public function prepare($post_array)
@@ -120,7 +130,7 @@ class User
         return true;
     }
 
-    public function update($post_array, $excluse = NULL)
+    public function update($post_array, $excluse = [])
     {
         $fields = self::prepare($post_array);
         $sql = "UPDATE " . self::TABLENAME . " SET ";

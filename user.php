@@ -12,9 +12,16 @@ $boostack->renderOpenHtmlHeadTags("Users");
 
 require_once $boostack->registerTemplateFile("boostack/header.phtml");
 if($config['session_on'] && $objSession->IsLoggedIn()) {
-    $users = new UserList();
-    $res = $users->loadAllPaginate(1, 0);
-    require_once $boostack->registerTemplateFile("boostack/content_users.phtml");
+    if(hasPrivilege($CURRENTUSER,0)){
+        $users = new UserList();
+        $res = $users->loadAllPaginate(1, 0);
+        require_once $boostack->registerTemplateFile("boostack/content_users.phtml");
+    }else{
+        header("Location: " . $boostack->getFriendlyUrl("profile"));
+        $error = "You don't have permission to view this page";
+        require_once $boostack->registerTemplateFile("boostack/content_profile.phtml");
+    }
+
 
 
 }else
