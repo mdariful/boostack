@@ -312,3 +312,11 @@ footer .copy {
 		padding-left: 0px;
 	}
 }
+img.ajax-loader
+{
+    position: absolute;
+    top: 55%;
+    left: 45%;
+    width: 100px;
+    display: none;
+}

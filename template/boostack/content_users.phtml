@@ -10,8 +10,10 @@
 <p>&nbsp;</p>
 <section>
     <div class="container">
+        <!--loader-->
+        <img class="ajax-loader" src="assets/img/page-loader.gif" alt="loading..." />
         <!--Insert new user-->
-        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#insertUser">Add new User</button>
+        <button id="getUsers" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#insertUser">Add new User</button>
         <div class="modal fade" id="insertUser" role="dialog">
             <div class="modal-dialog">
 
@@ -83,34 +85,7 @@
 
             </div>
         </div>
-        <table class="table">
-            <thead>
-            <tr>
-                <th>Username</th>
-                <th>Email</th>
-                <th>Name</th>
-                <th>Active</th>
-                <th>Privilege</th>
-                <th>Action</th>
-            </tr>
-            </thead>
-            <tbody>
-            <?php foreach($res as $key): ?>
-            <tr>
-                <td><?php echo $key->username; ?></td>
-                <td><?php echo $key->email; ?></td>
-                <td><?php echo $key->name; ?></td>
-                <td><?php echo $key->active; ?></td>
-                <td><?php echo $key->privilege; ?></td>
-                <td>
-                    <button type="button" class="btn btn-info view" data-toggle="modal" data-target="#myModal" viewid="<?php echo $key->id; ?>">View</button>
-                    <input type="submit" class="btn btn-danger delete" name="delete" value="delete" id="<?php echo $key->id; ?>">
 
-                </td>
-            </tr>
-            <?php endforeach; ?>
-            </tbody>
-        </table>
 
 
         <div class="modal fade" id="myModal" role="dialog">
@@ -152,7 +127,7 @@
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">Active</label>
                                 <div class="col-sm-8">
-                                    <input class="form-control active1" type="text" id="active1" name="active1" disabled>
+                                    <input class="form-control active1" type="text" id="active1" name="active1">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -176,6 +151,120 @@
                     </form>
                 </div>
 
+            </div>
+        </div>
+
+
+
+
+
+
+        <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#home">All User</a></li>
+            <li id="activeuser"><a data-toggle="tab" href="#menu1" active="1">Active User</a></li>
+            <li id="inactiveuser"><a data-toggle="tab" href="#menu2" active="0">Inactive User</a></li>
+        </ul>
+
+        <div class="tab-content">
+            <div id="home" class="tab-pane active">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Name</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody class="myelem">
+                    <?php foreach($res as $key): ?>
+                        <tr class="user<?php echo $key->id; ?>">
+                            <td class="username"><?php echo $key->username; ?></td>
+                            <td class="email"><?php echo $key->email; ?></td>
+                            <td class="name"><?php echo $key->name; ?></td>
+
+                            <td>
+                                <button type="button" class="btn btn-info view" data-toggle="modal" data-target="#myModal" viewid="<?php echo $key->id; ?>">View</button>
+                                <input type="submit" class="btn btn-danger delete" name="delete" value="delete" id="<?php echo $key->id; ?>">
+                                    <input type="submit" class="btn btn-info activate" value="Active this user">
+                                    <input type="submit" class="btn btn-info disactivate" value="Disactive this user">
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                    <tr class="hidden elemtocopy">
+                        <td class="username"></td>
+                        <td class="email"></td>
+                        <td class="name"></td>
+                        <td>
+                            <button type="button" class="btn btn-info view" data-toggle="modal" data-target="#myModal" viewid="">View</button>
+                            <input type="submit" class="btn btn-danger delete" name="delete" value="delete" id="">
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+            <div id="menu1" class="tab-pane">
+                <h3>Active User</h3>
+
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Name</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody class="myelem1">
+
+                    <tr class="hidden elemtocopy1">
+                        <td class="username"></td>
+                        <td class="email"></td>
+                        <td class="name"></td>
+                        <td>
+                            <button type="button" class="btn btn-info view" data-toggle="modal" data-target="#myModal" viewid="">View</button>
+                            <input type="submit" class="btn btn-danger delete" name="delete" value="delete" id="">
+                            <input type="submit" class="btn btn-info activate" value="Active this user">
+                            <input type="submit" class="btn btn-info disactivate" value="Disactive this user">
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+            <div id="menu2" class="tab-pane">
+                <h3>Inactive User</h3>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Name</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody class="myelem2">
+
+
+
+                    <tr class="hidden elemtocopy2">
+                        <td class="username"></td>
+                        <td class="email"></td>
+                        <td class="name"></td>
+                        <td>
+                            <button type="button" class="btn btn-info view" data-toggle="modal" data-target="#myModal" viewid="">View</button>
+                            <input type="submit" class="btn btn-danger delete" name="delete" value="delete" id="">
+                            <input type="submit" class="btn btn-info activate" value="Active this user">
+                            <input type="submit" class="btn btn-info disactivate" value="Disactive this user">
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
