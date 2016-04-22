@@ -27,6 +27,15 @@ switch ($crud) {
     case "activeUser":
         activeUser();
         Break;
+    case "activateUser":
+        activateUser();
+        Break;
+    case "disactivateUser":
+        disactiveUser();
+        Break;
+    case "userExist";
+        userExsist();
+        Break;
     Default:
         exit;
 }
@@ -138,4 +147,43 @@ function activeUser(){
     $users = new UserList();
     $res["data"]=$users->activeUser($activeid);
     echo json_encode($res);
+}
+function disactiveUser(){
+    $res = array();
+    if(isset($_POST["id"])){
+        $id = $_POST["id"];
+        $user = new User($id);
+        $arr=0;
+        $res["status"] = $user->userActivation($arr,$id);
+
+    }else{
+        $res["status"] = false;
+        $res["error"]="something missing";
+    }
+    echo json_encode($res);
+}
+function activateUser(){
+    $res = array();
+    if(isset($_POST["id"])){
+        $id = $_POST["id"];
+        $user = new User($id);
+        $arr=1;
+        $res["status"] = $user->userActivation($arr,$id);
+
+    }else{
+        $res["status"] = false;
+        $res["error"]="something missing";
+    }
+    echo json_encode($res);
+}
+function userExsist(){
+$res = array();
+if(isset($_POST["email"])){
+    $email = sanitizeInput($_POST["email"]);
+    if(checkEmailFormat($email)){
+        $user = new User();
+        $res = $user->checkUserExistsByEmail($email,false);
+    }
+}
+echo json_encode($res);
 }

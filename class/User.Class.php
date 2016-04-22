@@ -38,7 +38,7 @@ class User implements \JsonSerializable
 
     private $excluse_from_update = array(
         "id",
-        "active",
+        //"active",
         "username",
         "email",
         "last_access",
@@ -130,6 +130,13 @@ class User implements \JsonSerializable
         return true;
     }
 
+    public function userActivation($param, $userid){
+        $sql = "UPDATE ".self::TABLENAME. " SET active=".$param." WHERE id=".$userid.";";
+        $this->pdo->query($sql);
+        
+        return true;
+
+    }
     public function update($post_array, $excluse = [])
     {
         $fields = self::prepare($post_array);

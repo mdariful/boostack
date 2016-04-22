@@ -2,40 +2,65 @@
  * Created by Md Ariful on 18/04/2016.
  */
 $(document).ready(function () {
-
-
-    $(".nav-tabs #activeuser").on("click",function(elem){
+    //Fill the table with all user
+    allUser();
+    //Fill the user table on active click button on the tab
+    $(document).on('click','active',function(){
+        allUser();
+        //remove old user from the dom
+        $('.insertusertoremove').remove();
+    });
+    //Active the user
+    $(document).on('click', '.activate', function (elem) {
+        var activate = $(elem.target).attr('activate');
+        console.log(activate);
+        activateUser(activate);
+    });
+    //Disactive the user
+    $(document).on('click', '.disactivate', function (elem) {
+        var disactivate = $(elem.target).attr('disactivate');
+        console.log(disactivate);
+        disactivateUser(disactivate);
+    });
+    //view the active user
+    $(".nav-tabs #activeuser").on("click", function (elem) {
         console.log(elem);
-        var activeid=$(elem.target).attr('active');
+        var activeid = $(elem.target).attr('active');
         console.log(activeid);
         $('.elemtoremove').remove();
         activeUser(activeid);
 
     });
-    $(".nav-tabs #inactiveuser").on("click",function(elem){
+    //view the inactive user
+    $(".nav-tabs #inactiveuser").on("click", function (elem) {
         console.log(elem);
-        var activeid=$(elem.target).attr('active');
+        var activeid = $(elem.target).attr('active');
         console.log(activeid);
         $('.elemtoremove').remove();
         activeUser(activeid);
 
     });
+    //Clear the form from insert new user modal form
     $('#getUsers').on('click', function () {
         clearForm();
     });
-
+    // Save the user
     $('#save').on('click', function () {
         userInsert();
         $(".modal").modal('hide');
         return false;
     });
-
+    //Control if email already exist
+    $('#saveform').on("blur","#email",function(){
+        userExist();
+    });
+    //update the user
     $(document).submit('#userform', function () {
         userUpdate();
         $(".modal").modal('hide');
         return false;
     });
-
+    //delete the user on confirm
     $(document).on('click', '.delete', function (elem) {
         var result = confirm("Want to delete?");
         if (result) {
@@ -45,7 +70,7 @@ $(document).ready(function () {
             return false;
         }
     });
-
+    //view the user
     $(document).on('click', '.view', function (elem) {
         var viewid = $(elem.target).attr("viewid");
         console.log(viewid);
@@ -55,6 +80,8 @@ $(document).ready(function () {
 
 
 });
+
+//Insert the user from the modal form add new user
 function userInsert() {
 
     var username = $('#username').val();
@@ -89,9 +116,10 @@ function userInsert() {
             $('.delete', elem).attr('id', res.data.id);
             $(elem).addClass('user' + res.data.id);
             $(elem).appendTo('.myelem');
-
-
+            $(elem).addClass('insertusertoremove');
             console.log("ok");
+            $('#alerts').addClass('alert-success');
+            $('#alerts').html('<p>User added successfully</p><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>')
         } else {
             console.log("Error");
         }
@@ -102,6 +130,7 @@ function userInsert() {
 
 
 }
+//Update the user from the modal update form
 function userUpdate() {
 
     var id = $('#id1').val();
@@ -142,6 +171,7 @@ function userUpdate() {
     });
 
 }
+//delete the user when the delete button pressed
 function userDelete(userid) {
     $('.ajax-loader').show();
 
@@ -156,6 +186,8 @@ function userDelete(userid) {
         if (res.status === true) {
             $('.user' + userid).remove();
             $('.ajax-loader').hide();
+            $('#updateresult').addClass('alert-warning');
+            $('#updateresult').html('<p>User delete successfully</p> <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>');
         } else {
             console.log("Errore");
         }
@@ -164,7 +196,7 @@ function userDelete(userid) {
     });
 }
 
-
+//Fill the modal form with the user data
 function getUser(viewid) {
     $.ajax({
         cache: false,
@@ -187,32 +219,39 @@ function getUser(viewid) {
         console.log("error");
     });
 }
-/*function  allUser() {
- $.ajax({
- cache: false,
- url: "ajax_user_controller.php/",
- method: "POST",
- data: {type: "allUser"}
+//Get all the user one the current document & when the all user tab button
+function allUser() {
+    $.ajax({
+        cache: false,
+        url: "ajax_user_controller.php/",
+        method: "POST",
+        data: {type: "allUser"}
 
- }).done(function (data) {
- var res = JSON.parse(data);
- console.log(res);
- $.each(res.data, function(i, key){
-     if(key.active==="0"){
-         $(".user").append("<td>" + key.username + "</td><td>" + key.email + "</td><td>"+key.name+"</td>");
-     }else if(key.active==="1"){
-         $(".user").append("<td>" + key.username + "</td><td>" + key.email + "</td><td>"+key.name+"</td>");
-     }else{
-         console.log(key);
-     }
+    }).done(function (data) {
+        var res = JSON.parse(data);
+        console.log(res);
+        $.each(res.data, function (i, key) {
+            console.log(key.username);
+            var elem1 = $('.elemtocopy').clone();
+            $(elem1).removeClass('hidden elemtocopy');
+            $('.username', elem1).html(key.username);
+            $('.email', elem1).html(key.email);
+            $('.name', elem1).html(key.name);
+            $('.view', elem1).attr('viewid', key.id);
+            $('.delete', elem1).attr('id', key.id);
+            $('.activate', elem1).attr('activate', key.id);
+            $('.disactivate', elem1).attr('disactivate', key.id);
+            $(elem1).addClass('user' + key.id);
+            $(elem1).appendTo('.myelem');
 
- })
 
- }).fail(function (data) {
- console.log("error");
- });
- }*/
+        })
 
+    }).fail(function (data) {
+        console.log("error");
+    });
+}
+//clear the modal form when the add new user button clicked
 function clearForm() {
     $('#saveform #username').val('');
     $('#saveform #name').val('');
@@ -220,7 +259,9 @@ function clearForm() {
     $('#saveform #password').val('');
 
 }
-function activeUser(activeid){
+
+//View the user on the specified Active or Inactive Tab.
+function activeUser(activeid) {
     $.ajax({
         cache: false,
         url: "ajax_user_controller.php/",
@@ -230,9 +271,9 @@ function activeUser(activeid){
     }).done(function (data) {
         var res = JSON.parse(data);
         console.log(res);
-        $.each(res.data, function(i, key){
+        $.each(res.data, function (i, key) {
             console.log(key.username);
-            if(key.active==="1"){
+            if (key.active === "1") {
                 var elem1 = $('.elemtocopy1').clone();
                 $(elem1).removeClass('hidden elemtocopy1');
                 $('.username', elem1).html(key.username);
@@ -240,10 +281,11 @@ function activeUser(activeid){
                 $('.name', elem1).html(key.name);
                 $('.view', elem1).attr('viewid', key.id);
                 $('.delete', elem1).attr('id', key.id);
-                $(elem1).addClass('user' + key.id);
+                $('.disactivate', elem1).attr('disactivate', key.id);
+                $(elem1).addClass('user' + key.id + ' ' + 'u' + key.id);
                 $(elem1).appendTo('.myelem1');
                 $(elem1).addClass('elemtoremove');
-            }else{
+            } else {
                 var elem2 = $('.elemtocopy2').clone();
                 $(elem2).removeClass('hidden elemtocopy2');
                 $('.username', elem2).html(key.username);
@@ -251,7 +293,8 @@ function activeUser(activeid){
                 $('.name', elem2).html(key.name);
                 $('.view', elem2).attr('viewid', key.id);
                 $('.delete', elem2).attr('id', key.id);
-                $(elem2).addClass('user' + key.id);
+                $('.activate', elem2).attr('activate', key.id);
+                $(elem2).addClass('user' + key.id + ' ' + 'u' + key.id);
                 $(elem2).appendTo('.myelem2');
                 $(elem2).addClass('elemtoremove');
             }
@@ -263,3 +306,83 @@ function activeUser(activeid){
         console.log("error");
     });
 }
+//active the user when the active button pressed
+function activateUser(activate) {
+    $('.ajax-loader').show();
+    $.ajax({
+        cache: false,
+        url: "ajax_user_controller.php/",
+        method: "POST",
+        data: {type: "activateUser", id: activate}
+
+    }).done(function (data) {
+        var res = JSON.parse(data);
+        console.log(res);
+        if (res.status === true) {
+            $('.u' + activate).remove();
+            $('.ajax-loader').hide();
+        }
+
+
+    }).fail(function (data) {
+        console.log("error");
+    });
+
+}
+//Disactive the user when the disactive button pressed
+function disactivateUser(disactivate) {
+    $('.ajax-loader').show();
+    $.ajax({
+        cache: false,
+        url: "ajax_user_controller.php/",
+        method: "POST",
+        data: {type: "disactivateUser", id: disactivate}
+
+    }).done(function (data) {
+        var res = JSON.parse(data);
+        console.log(res);
+        if (res.status === true) {
+            $('.u' + disactivate).remove();
+            $('.ajax-loader').hide();
+        }
+
+
+    }).fail(function (data) {
+        console.log("error");
+    });
+
+}
+//Controll the email existing on the new user creation modal
+function userExist(){
+    var email = $('#email').val();
+    console.log(email);
+    $.ajax({
+        cache: false,
+        url: "ajax_user_controller.php/",
+        type: "POST",
+        data: {type:"userExist", email: email}
+    }).done(function (data) {
+        console.log(data);
+        var res = JSON.parse(data);
+        console.log(res);
+        if (res === false ) {
+
+            console.log("Ok!");
+            $('#result').empty();
+            $('#result').removeClass('alert-danger');
+            $('.email').removeClass('has-error');
+            $( "#save" ).prop( "disabled", false );
+        }else{
+            $('#result').addClass('alert-danger');
+            $('#result').html('Email already exist');
+            $('.email').addClass('has-error');
+            console.log("Email already exist!");
+            $( "#save" ).prop( "disabled", true );
+        }
+
+    }).fail(function (data) {
+        console.log(data);
+    });
+}
+
+

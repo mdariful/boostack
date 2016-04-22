@@ -51,7 +51,15 @@ class UserList
         return $this->total;
     }
 
+    public function activeUser($active){
+        $q = $this->pdo->prepare("SELECT * FROM ".self::USER_TABLE." WHERE ACTIVE=".$active.";");
+        $q->execute();
 
+        $rows = $q->fetchAll(PDO::FETCH_OBJ);
+        foreach ($rows as $users) $this->list[] = $users;
+
+        return $this->list;
+    }
 
     public function getUsers($active, $privilege)
     {

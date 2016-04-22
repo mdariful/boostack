@@ -10,6 +10,8 @@
 <p>&nbsp;</p>
 <section>
     <div class="container">
+        <div id="alerts">
+        </div>
         <!--loader-->
         <img class="ajax-loader" src="assets/img/page-loader.gif" alt="loading..." />
         <!--Insert new user-->
@@ -21,9 +23,11 @@
                 <div class="modal-content">
 
                         <div class="modal-header">
+
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                             <h4 class="modal-title">Add new user</h4>
                             <p class="alert-danger"></p>
+                            <div id="result" class="alert"></div>
                         </div>
                         <div class="modal-body">
                         <form name="saveform" id="saveform" class="form-horizontal" method="post" action="<?=$boostack->getFriendlyUrl("user")?>">
@@ -170,6 +174,7 @@
                 <table class="table">
                     <thead>
                     <tr>
+
                         <th>Username</th>
                         <th>Email</th>
                         <th>Name</th>
@@ -177,20 +182,7 @@
                     </tr>
                     </thead>
                     <tbody class="myelem">
-                    <?php foreach($res as $key): ?>
-                        <tr class="user<?php echo $key->id; ?>">
-                            <td class="username"><?php echo $key->username; ?></td>
-                            <td class="email"><?php echo $key->email; ?></td>
-                            <td class="name"><?php echo $key->name; ?></td>
 
-                            <td>
-                                <button type="button" class="btn btn-info view" data-toggle="modal" data-target="#myModal" viewid="<?php echo $key->id; ?>">View</button>
-                                <input type="submit" class="btn btn-danger delete" name="delete" value="delete" id="<?php echo $key->id; ?>">
-                                    <input type="submit" class="btn btn-info activate" value="Active this user">
-                                    <input type="submit" class="btn btn-info disactivate" value="Disactive this user">
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
                     <tr class="hidden elemtocopy">
                         <td class="username"></td>
                         <td class="email"></td>
@@ -198,6 +190,8 @@
                         <td>
                             <button type="button" class="btn btn-info view" data-toggle="modal" data-target="#myModal" viewid="">View</button>
                             <input type="submit" class="btn btn-danger delete" name="delete" value="delete" id="">
+                            <!--<input type="submit" class="btn btn-info activate" value="Active this user" activate="">
+                            <input type="submit" class="btn btn-info disactivate" value="Disactive this user" disactivate="">-->
                         </td>
 
                     </tr>
@@ -211,6 +205,7 @@
                 <table class="table">
                     <thead>
                     <tr>
+
                         <th>Username</th>
                         <th>Email</th>
                         <th>Name</th>
@@ -226,8 +221,7 @@
                         <td>
                             <button type="button" class="btn btn-info view" data-toggle="modal" data-target="#myModal" viewid="">View</button>
                             <input type="submit" class="btn btn-danger delete" name="delete" value="delete" id="">
-                            <input type="submit" class="btn btn-info activate" value="Active this user">
-                            <input type="submit" class="btn btn-info disactivate" value="Disactive this user">
+                            <input type="submit" class="btn btn-info disactivate" value="Disactive this user" disactivate="">
                         </td>
 
                     </tr>
@@ -257,8 +251,7 @@
                         <td>
                             <button type="button" class="btn btn-info view" data-toggle="modal" data-target="#myModal" viewid="">View</button>
                             <input type="submit" class="btn btn-danger delete" name="delete" value="delete" id="">
-                            <input type="submit" class="btn btn-info activate" value="Active this user">
-                            <input type="submit" class="btn btn-info disactivate" value="Disactive this user">
+                            <input type="submit" class="btn btn-info activate" value="Active this user" activate="">
                         </td>
 
                     </tr>
