@@ -182,8 +182,9 @@ if(isset($_POST["email"])){
     $email = sanitizeInput($_POST["email"]);
     if(checkEmailFormat($email)){
         $user = new User();
-        $res = $user->checkUserExistsByEmail($email,false);
+        $res["status"] = $user->checkUserExistsByEmail($email,false);
     }
+}else{
 }
 echo json_encode($res);
 }

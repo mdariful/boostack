@@ -2,6 +2,7 @@
  * Created by Md Ariful on 18/04/2016.
  */
 $(document).ready(function () {
+
     //Fill the table with all user
     allUser();
     //Fill the user table on active click button on the tab
@@ -19,23 +20,23 @@ $(document).ready(function () {
     //Disactive the user
     $(document).on('click', '.disactivate', function (elem) {
         var disactivate = $(elem.target).attr('disactivate');
-        console.log(disactivate);
+
         disactivateUser(disactivate);
     });
     //view the active user
     $(".nav-tabs #activeuser").on("click", function (elem) {
-        console.log(elem);
+
         var activeid = $(elem.target).attr('active');
-        console.log(activeid);
+
         $('.elemtoremove').remove();
         activeUser(activeid);
 
     });
     //view the inactive user
     $(".nav-tabs #inactiveuser").on("click", function (elem) {
-        console.log(elem);
+
         var activeid = $(elem.target).attr('active');
-        console.log(activeid);
+
         $('.elemtoremove').remove();
         activeUser(activeid);
 
@@ -47,13 +48,13 @@ $(document).ready(function () {
     // Save the user
     $('#save').on('click', function () {
         userInsert();
-        $(".modal").modal('hide');
         return false;
     });
     //Control if email already exist
     $('#saveform').on("blur","#email",function(){
         userExist();
     });
+
     //update the user
     $(document).submit('#userform', function () {
         userUpdate();
@@ -73,66 +74,95 @@ $(document).ready(function () {
     //view the user
     $(document).on('click', '.view', function (elem) {
         var viewid = $(elem.target).attr("viewid");
-        console.log(viewid);
+
         getUser(viewid);
 
     });
-
+    $(document).on('click', '.alert-close', function() {
+        $('.container #message').hide();
+    });
 
 });
 
 //Insert the user from the modal form add new user
 function userInsert() {
-
+    $('.ajax-loader').show();
     var username = $('#username').val();
     var name = $('#name').val();
     var privilege = $('#privilege').val();
     var active = $('#active').val();
     var email = $('#email').val();
     var password = $('#password').val();
+    if(name !='' && username!='' && password!=''){
+        if(name =='' && username =='' ){
+            $('.modal-header .alert').addClass('alert-warning');
+            $('.modal-header .alert').html('<p>Invalid username, name or password</p>');
+
+            return false;
+        }
+        if(password!='' && password.length<8){
+            $('.modal-header .alert').addClass('alert-warning');
+            $('.modal-header .alert').html('<p>Password must contain at least 8 characters!</p>');
+
+            return false;
+        }
+        if(password == username){
+            $('.modal-header .alert').addClass('alert-warning');
+            $('.modal-header .alert').html('<p>Password must be different from username</p>');
+
+            return false;
+        }
+    }else{
+        $('.modal-header .alert').addClass('alert-warning');
+        $('.modal-header .alert').html('<p>Fill all the field</p>');
+        $( "#save" ).prop( "disabled", false );
+    }
+
     $.ajax({
-        cache: false,
-        url: "ajax_user_controller.php/",
-        method: "POST",
-        data: {
-            type: "insert",
-            username: username,
-            name: name,
-            privilege: privilege,
-            active: active,
-            email: email,
-            password: password
-        }
-    }).done(function (data) {
-        var res = JSON.parse(data);
-        console.log(res);
-        if (res.status === true) {
-            var elem = $('.elemtocopy').clone();
-            $(elem).removeClass('hidden elemtocopy');
-            $('.username', elem).html(res.data.username);
-            $('.email', elem).html(res.data.email);
-            $('.name', elem).html(res.data.name);
-            $('.view', elem).attr('viewid', res.data.id);
-            $('.delete', elem).attr('id', res.data.id);
-            $(elem).addClass('user' + res.data.id);
-            $(elem).appendTo('.myelem');
-            $(elem).addClass('insertusertoremove');
-            console.log("ok");
-            $('#alerts').addClass('alert-success');
-            $('#alerts').html('<p>User added successfully</p><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>')
-        } else {
-            console.log("Error");
-        }
+            cache: false,
+            url: "ajax_user_controller.php/",
+            method: "POST",
+            data: {
+                type: "insert",
+                username: username,
+                name: name,
+                privilege: privilege,
+                active: active,
+                email: email,
+                password: password
+            }
+        }).done(function (data) {
+            var res = JSON.parse(data);
+            $('.ajax-loader').hide();
 
-    }).fail(function (data) {
-        console.log(data);
-    });
+            if (res.status === true) {
+                var elem = $('.elemtocopy').clone();
+                $(elem).removeClass('hidden elemtocopy');
+                $('.username', elem).html(res.data.username);
+                $('.email', elem).html(res.data.email);
+                $('.name', elem).html(res.data.name);
+                $('.view', elem).attr('viewid', res.data.id);
+                $('.delete', elem).attr('id', res.data.id);
+                $(elem).addClass('user' + res.data.id);
+                $(elem).appendTo('.myelem');
+                $(elem).addClass('insertusertoremove');
+                $(".container #message").show();
+                $('.container #message').addClass('alert-success');
+                $('.container #message').html('<button type="button" class="close alert-close">&times;</button><p>User added successfully</p>');
+                $(".modal").modal('hide');
+            } else {
+                console.log("Error");
+            }
 
+        }).fail(function (data) {
+            $('.ajax-loader').show();
+            console.log(data);
+        });
 
 }
 //Update the user from the modal update form
 function userUpdate() {
-
+    $('.ajax-loader').show();
     var id = $('#id1').val();
     var name = $('#name1').val();
     var privilege = $('#privilege1').val();
@@ -154,12 +184,14 @@ function userUpdate() {
         }
     }).done(function (data) {
         var res = JSON.parse(data);
-        console.log(res);
+        $('.ajax-loader').hide();
         if (res.status === true) {
 
             $('.user' + res.data.id + ' ' + '.name').html(res.data.name);
+            $(".container #message").show();
+            $('#alerts').addClass('alert-success');
+            $('#alerts').html('<button type="button" class="close alert-close">&times;</button><p>User update successfully</p>');
 
-            console.log("ok");
         } else {
             console.log("error");
         }
@@ -167,27 +199,27 @@ function userUpdate() {
 
     }).fail(function (data) {
         console.log(data);
-
+        $('.ajax-loader').show();
     });
 
 }
 //delete the user when the delete button pressed
 function userDelete(userid) {
     $('.ajax-loader').show();
-
     $.ajax({
         cache: false,
         url: "ajax_user_controller.php/",
         type: "POST",
         data: {type: "delete", id: userid}
     }).done(function (data) {
-        console.log("delete");
+
         var res = JSON.parse(data);
         if (res.status === true) {
             $('.user' + userid).remove();
             $('.ajax-loader').hide();
-            $('#updateresult').addClass('alert-warning');
-            $('#updateresult').html('<p>User delete successfully</p> <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>');
+            $(".container #message").show();
+            $('.container #message').addClass('alert-warning');
+            $('.container #message').html('<button type="button" class="close alert-close">&times;</button><p>Delete successfully</p>');
         } else {
             console.log("Errore");
         }
@@ -198,6 +230,7 @@ function userDelete(userid) {
 
 //Fill the modal form with the user data
 function getUser(viewid) {
+    $('.ajax-loader').show();
     $.ajax({
         cache: false,
         url: "ajax_user_controller.php/",
@@ -206,7 +239,7 @@ function getUser(viewid) {
 
     }).done(function (data) {
         var res = JSON.parse(data);
-        console.log(res);
+        $('.ajax-loader').hide();
         $("#userform .id1").val(res.data.id);
         $("#userform .username1").val(res.data.username);
         $("#userform .email1").val(res.data.email);
@@ -217,10 +250,12 @@ function getUser(viewid) {
 
     }).fail(function (data) {
         console.log("error");
+        $('.ajax-loader').show();
     });
 }
 //Get all the user one the current document & when the all user tab button
 function allUser() {
+    $('.ajax-loader').show();
     $.ajax({
         cache: false,
         url: "ajax_user_controller.php/",
@@ -229,9 +264,9 @@ function allUser() {
 
     }).done(function (data) {
         var res = JSON.parse(data);
-        console.log(res);
+        $('.ajax-loader').hide();
         $.each(res.data, function (i, key) {
-            console.log(key.username);
+
             var elem1 = $('.elemtocopy').clone();
             $(elem1).removeClass('hidden elemtocopy');
             $('.username', elem1).html(key.username);
@@ -249,6 +284,7 @@ function allUser() {
 
     }).fail(function (data) {
         console.log("error");
+        $('.ajax-loader').show();
     });
 }
 //clear the modal form when the add new user button clicked
@@ -262,6 +298,7 @@ function clearForm() {
 
 //View the user on the specified Active or Inactive Tab.
 function activeUser(activeid) {
+    $('.ajax-loader').show();
     $.ajax({
         cache: false,
         url: "ajax_user_controller.php/",
@@ -270,9 +307,9 @@ function activeUser(activeid) {
 
     }).done(function (data) {
         var res = JSON.parse(data);
-        console.log(res);
+        $('.ajax-loader').hide();
         $.each(res.data, function (i, key) {
-            console.log(key.username);
+
             if (key.active === "1") {
                 var elem1 = $('.elemtocopy1').clone();
                 $(elem1).removeClass('hidden elemtocopy1');
@@ -303,6 +340,7 @@ function activeUser(activeid) {
 
 
     }).fail(function (data) {
+        $('.ajax-loader').show();
         console.log("error");
     });
 }
@@ -317,9 +355,11 @@ function activateUser(activate) {
 
     }).done(function (data) {
         var res = JSON.parse(data);
-        console.log(res);
         if (res.status === true) {
             $('.u' + activate).remove();
+            $(".container #message").show();
+            $('.container #message').addClass('alert-success');
+            $('.container #message').html('<button type="button" class="close alert-close">&times;</button><p>User now is activeted</p>');
             $('.ajax-loader').hide();
         }
 
@@ -340,9 +380,12 @@ function disactivateUser(disactivate) {
 
     }).done(function (data) {
         var res = JSON.parse(data);
-        console.log(res);
+
         if (res.status === true) {
             $('.u' + disactivate).remove();
+            $(".container #message").show();
+            $('.container #message').addClass('alert-success');
+            $('.container #message').html('<button type="button" class="close alert-close">&times;</button><p>User now is disactiveted</p>');
             $('.ajax-loader').hide();
         }
 
@@ -355,34 +398,70 @@ function disactivateUser(disactivate) {
 //Controll the email existing on the new user creation modal
 function userExist(){
     var email = $('#email').val();
-    console.log(email);
-    $.ajax({
-        cache: false,
-        url: "ajax_user_controller.php/",
-        type: "POST",
-        data: {type:"userExist", email: email}
-    }).done(function (data) {
-        console.log(data);
-        var res = JSON.parse(data);
-        console.log(res);
-        if (res === false ) {
+    if(email==''){
+        $('.modal-header .alert').addClass('aler-warning');
+        $('.modal-header .alert').html('<p>Email field need to be filled</p>');
 
-            console.log("Ok!");
-            $('#result').empty();
-            $('#result').removeClass('alert-danger');
-            $('.email').removeClass('has-error');
-            $( "#save" ).prop( "disabled", false );
-        }else{
-            $('#result').addClass('alert-danger');
-            $('#result').html('Email already exist');
-            $('.email').addClass('has-error');
-            console.log("Email already exist!");
-            $( "#save" ).prop( "disabled", true );
-        }
+    }else{
+        $.ajax({
+            cache: false,
+            url: "ajax_user_controller.php/",
+            type: "POST",
+            data: {type:"userExist", email: email}
+        }).done(function (data) {
 
-    }).fail(function (data) {
-        console.log(data);
-    });
+            var res = JSON.parse(data);
+            console.log(res);
+            if (res.status === false ) {
+
+                $('.email').removeClass('has-error');
+                $('.modal-header .alert').removeClass('alert-warning');
+                $( "#save" ).prop( "disabled", false );
+                return true;
+            }else{
+                $('.modal-header .alert').addClass('alert-warning');
+                $('.modal-header .alert').html('<p>Choose another email</p>');
+                $('.email').addClass('has-error');
+
+                $( "#save" ).prop( "disabled", true );
+            }
+
+        }).fail(function (data) {
+            console.log(data);
+        });
+    }
+
 }
-
-
+function controlInsert(){
+    var username = $('#username').val();
+    var name = $('#name').val();
+    var privilege = $('#privilege').val();
+    var active = $('#active').val();
+    var email = $('#email').val();
+    var password = $('#password').val();
+    if(name !='' && username!='' && password!=''){
+    if(name =='' && username =='' ){
+        $('.modal-header .alert').addClass('alert-warning');
+        $('.modal-header .alert').html('<p>Invalid username, name or password</p>');
+        $( "#save" ).prop( "disabled", true );
+        return false;
+    }
+    if(password!='' && password.length<8){
+        $('.modal-header .alert').addClass('alert-warning');
+        $('.modal-header .alert').html('<p>Password must contain at least 8 characters!</p>');
+        $( "#save" ).prop( "disabled", true );
+        return false;
+    }
+    if(password == username){
+        $('.modal-header .alert').addClass('alert-warning');
+        $('.modal-header .alert').html('<p>Password must be different from username</p>');
+        $( "#save" ).prop( "disabled", true );
+        return false;
+    }
+    }else{
+        $('.modal-header .alert').addClass('alert-warning');
+        $('.modal-header .alert').html('<p>Fill all the field</p>');
+        $( "#save" ).prop( "disabled", true );
+    }
+    return true;
+}
